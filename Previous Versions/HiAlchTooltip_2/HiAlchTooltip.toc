@@ -1,0 +1,8 @@
+## Interface: 30300
+## Title: Hi Alch Tooltip Addon
+## Notes: Shows the Hi Alch price on item tooltips.
+## Version: 1.0
+## Author: YourName
+
+HiAlchData.lua
+HiAlchTooltip.lua

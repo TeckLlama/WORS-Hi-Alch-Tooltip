@@ -1,10 +1,9 @@
--- Function to get the Hi Alch price from the HiAlchData table using itemID or itemName
-local function GetHiAlchPrice(itemID, itemName)
-    for name, data in pairs(HiAlchData) do
+-- Function to get the Hi Alch price from the HiAlchData table using itemID
+local function GetHiAlchPrice(itemID)
+    for itemName, data in pairs(HiAlchData) do
         local regularID, notedID, price = unpack(data)
-        -- Check if itemID matches or itemName matches (ignoring case)
-        if itemID == regularID or itemID == notedID or name:lower() == itemName:lower() then
-            return price, name -- Return both price and the matched item name
+        if itemID == regularID or itemID == notedID then
+            return price, itemName -- Return both price and name
         end
     end
     return 0, nil -- Default if not found
@@ -34,8 +33,7 @@ local function AddHiAlchPrice(tooltip, itemLink)
     if not itemLink then return end
 
     local itemID = tonumber(itemLink:match("item:(%d+)"))
-    local itemName = GetItemInfo(itemLink) -- Retrieve the item name
-    local priceInGold, matchedName = GetHiAlchPrice(itemID, itemName) -- Retrieve Hi Alch price using itemID or itemName
+    local priceInGold, itemName = GetHiAlchPrice(itemID) -- Retrieve Hi Alch price and item name
 
     local stackCount = 1 -- Default to 1 if not in bags
     if IsShiftKeyDown() then
