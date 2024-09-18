@@ -1,6 +1,3 @@
--- Set the nature rune cost
-local natureRuneCost = 180
-
 -- Function to get the Hi Alch price from the HiAlchData table using itemID or itemName
 local function GetHiAlchPrice(itemID, itemName)
     for name, data in pairs(HiAlchData) do
@@ -74,17 +71,8 @@ local function AddHiAlchPrice(tooltip, itemLink)
         end
     end
 
-    -- Set the color based on whether the total value is less than the nature rune cost
-    local r, g, b = 1, 1, 1 -- Default white color
-    if totalValue < natureRuneCost then
-		r, g, b = 1, 0, 0 -- Red color if below the nature rune cost
-	else
-		r, g, b = 0, 1, 0 -- Green color if equal to or above the nature rune cost
-	end
-
-
-    -- Add the padded text to the tooltip with the chosen color
-    tooltip:AddLine(paddedText, r, g, b)
+    -- Add the padded text to the tooltip
+    tooltip:AddLine(paddedText, 1, 1, 1)
     tooltip:Show() -- Update the tooltip to show the new line
 end
 
