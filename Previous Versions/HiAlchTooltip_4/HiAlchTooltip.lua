@@ -13,44 +13,24 @@ local function GetHiAlchPrice(itemID, itemName)
     return 0, nil -- Default if not found
 end
 
--- Function to get stack count of an item from player's bags and guild bank
+-- Function to get stack count of an item from player's bags
 local function GetItemStackCount(itemID)
     local stackCount = 0
-
-    -- Check bags (bagID 0 to 4)
-    for bagID = 0, 4 do
+    for bagID = 0, 4 do -- Iterate through all bags
         for slotID = 1, GetContainerNumSlots(bagID) do
             local link = GetContainerItemLink(bagID, slotID)
             if link then
                 local id = tonumber(link:match("item:(%d+)"))
                 local count = select(2, GetContainerItemInfo(bagID, slotID))
                 if id == itemID then
-                    stackCount = stackCount + count
+                    stackCount = count
+                    return stackCount
                 end
             end
         end
     end
-
-    -- Check guild bank (tab 1 to 6, adjust if more tabs exist on your server)
-    if IsInGuild() then
-        for tab = 1, 6 do -- Iterate through all guild bank tabs
-            for slotID = 1, 98 do -- Guild bank slots are typically 98 per tab
-                local link = GetGuildBankItemLink(tab, slotID)
-                if link then
-                    local id = tonumber(link:match("item:(%d+)"))
-                    local count = select(2, GetGuildBankItemInfo(tab, slotID))
-                    if id == itemID then
-                        stackCount = stackCount + count
-                    end
-                end
-            end
-        end
-    end
-
     return stackCount
 end
-
-
 
 -- Function to add Hi Alch price to the tooltip
 local function AddHiAlchPrice(tooltip, itemLink)
@@ -96,7 +76,7 @@ local function AddHiAlchPrice(tooltip, itemLink)
 
     -- Set the color based on whether the total value is less than the nature rune cost
     local r, g, b = 1, 1, 1 -- Default white color
-    if priceInGold < natureRuneCost then
+    if totalValue < natureRuneCost then
 		r, g, b = 1, 0, 0 -- Red color if below the nature rune cost
 	else
 		r, g, b = 0, 1, 0 -- Green color if equal to or above the nature rune cost
